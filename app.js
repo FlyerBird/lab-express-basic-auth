@@ -26,10 +26,38 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
 // 👇 Start handling routes here
 const index = require('./routes/index');
-app.use('/', index);
+const userRouter = require ('./routes/auth');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
-const userRouter = require ('./routes/auth')
-app.use('/auth', userRouter)
+app.use('/', index);
+app.use('/auth', userRouter);
+
+// For deployment
+app.set('trust proxy', 1);
+app.use(
+  session({
+    name: 'cookieApp',
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 2592000000 // 30 days in milliseconds
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL || 'mongodb://localhost/lab-express-basic-auth'
+    })
+  }) 
+)
+
+
+
+
+
+
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
