@@ -13,25 +13,9 @@ const express = require('express');
 // https://www.npmjs.com/package/hbs
 const hbs = require('hbs');
 
-const app = express();
-
-// ℹ️ This function is getting exported from the config folder. It runs most middlewares
-require('./config')(app);
-
-// default value for title local
-const projectName = 'lab-express-basic-auth';
-const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerCase();
-
-app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
-
-// 👇 Start handling routes here
-const index = require('./routes/index');
-const userRouter = require ('./routes/auth');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-
-app.use('/', index);
-app.use('/auth', userRouter);
+const app = express();
 
 // For deployment
 app.set('trust proxy', 1);
@@ -52,6 +36,22 @@ app.use(
     })
   }) 
 )
+
+// ℹ️ This function is getting exported from the config folder. It runs most middlewares
+require('./config')(app);
+
+// default value for title local
+const projectName = 'lab-express-basic-auth';
+const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerCase();
+
+app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
+
+// 👇 Start handling routes here
+const index = require('./routes/index');
+const userRouter = require ('./routes/auth');
+
+app.use('/', index);
+app.use('/auth', userRouter);
 
 
 

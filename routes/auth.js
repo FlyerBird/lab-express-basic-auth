@@ -9,6 +9,7 @@ router.get('/signup', async (req, res, next) => {
 })
 
 router.get('/login', async (req, res, next) => {
+  console.log(req.session)
   res.render('auth/login');
 })
 
