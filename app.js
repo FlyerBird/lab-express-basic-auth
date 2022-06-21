@@ -50,8 +50,14 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 const index = require('./routes/index');
 const userRouter = require ('./routes/auth');
 
+const main = require('./routes/main');
+const private = require('./routes/private');
+
 app.use('/', index);
 app.use('/auth', userRouter);
+
+app.use('/main', main);
+app.use('/private', private);
 
 
 

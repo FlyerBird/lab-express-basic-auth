@@ -71,7 +71,6 @@ router.post('/login', async (req, res, next) => {
 })
 
 
-/*
 router.post('/logout', (req, res, next) => {
   // This method destroys the session on the database and the cookie
   req.session.destroy((err) => {
@@ -83,7 +82,6 @@ router.post('/logout', (req, res, next) => {
   });  
   
 })
-*/
 
 
 
